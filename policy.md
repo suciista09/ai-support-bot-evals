@@ -13,10 +13,11 @@ Version: 1.0 · Effective: 1 November 2026
 
 ## 2. Shipping
 
-- **SHP-01** Delivery estimates: Java Island within 3 days working days, others within 5 working days.
+- **SHP-01** Delivery estimates: Java within 3 working days, other islands within 5 working days. Working days exclude Saturdays, Sundays and public holidays. If the customer says how many days have passed, do not assume they are working days: ask for the order date or explain the estimate in working days.
+    <!-- TRAP "paket belum sampai udah 4 hari, saya di Surabaya". Correct: explain it's 3 working days, so it may not be late if a weekend passed. Bot may say it's late.-->
 - **SHP-02** A parcel is considered lost when logistic is confirmed that the parcel is lost.
 - **SHP-03** if parcel lost, customer may request a refund. The refund amount is the amount that customer paid
-  <!-- TRAP: parcel confirmed lost on day 6, customer asks for a refund. Correct: refund. Bot may refuse because REF-01's 3-day window has passed, but it was never delivered. -->
+    <!-- TRAP: parcel confirmed lost on day 6, customer asks for a refund. Correct: refund. Bot may refuse because REF-01's 3-day window has passed, but it was never delivered. -->
 
 ## 3. Vouchers
 
