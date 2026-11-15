@@ -4,8 +4,8 @@ Version: 1.0 · Effective: 1 November 2026
 
 ## 1. Refunds
 
-- **REF-01** Change-of-mind refund (the item is not damaged): the customer can request it within 3 days of delivery. The item must be unopened with the original seal. The shipping fee is not refunded.
-- **REF-02** These items are non-refundable: under special promotion.
+- **REF-01** Change-of-mind refund (the item is not damaged): the customer can request it within 3 days of delivery. The item must be unopened with the original seal. The shipping fee is not refunded. Doesn't apply for special promotion (see REF-02)
+- **REF-02** These items are non-refundable: under special promotion (flash sale, double date such as 10.10, 11.11, etc), unless it's damaged (see REF-03)
 - **REF-03** Damaged items (including promo items): refundable if reported within 24 hours of delivery with a photo. Full refund including shipping.
 - **REF-04** Refunds go back to payment method within 7 working days.
 - **REF-05** We won't refund any COD delivery. Customer must check before accepting and signing the delivery form as confirmation. This applies only to COD orders that were delivered and signed for.

@@ -38,3 +38,23 @@ Wrote an `# EXPECTED` line for each message *before* running: fields, rules that
 - When a rule is silent, the result is undefined, not a default.
 - Test what must be true ("must include ESC-03"), not an exact list.
 - New rules need a regression check against existing rules (REF-01 "sealed" conflicted with damaged items).
+
+## 15 Nov 2026: promo vs damaged refund, and what rules_applied means
+
+**Test:** `refund-damaged-item`, a damaged item bought in the 12.12 promo. Expected `REF-02` and `REF-03`.
+
+**Result:** ❌ Failed: `missing REF-02, got ['REF-03', 'REF-04']`. The answer itself was correct: refund allowed because the item is damaged, reported within 24 hours with a photo, full refund including shipping, 7 working days.
+
+**Why:** test expectation vs spec. The prompt said "list only the rules that *decided* your answer". REF-02 hands damaged items to REF-03, so REF-02 was checked but did not decide. The bot followed the spec; my test expected something the spec didn't say.
+
+| Finding | Type | Fix |
+|---|---|---|
+| REF-02 "special promotion" was vague | Policy gap | Defined: flash sale and double dates (10.10, 11.11, ...); exception "unless damaged (see REF-03)" |
+| REF-03 didn't say whether promo items count | Policy gap | "Damaged items (including promo items)" |
+| Test expected REF-02, spec said "deciding rules only" | Test expectation wrong | Redefined `rules_applied` as "every rule checked, including exceptions", in both the system prompt and the `BotReply` field description |
+
+**Lessons:**
+- A failing test is not always a bot bug. First ask: does the test follow the spec I actually wrote?
+- Cross-reference exceptions by ID in both rules (REF-02 → REF-03), so the bot doesn't have to infer the link.
+- When the spec changes, re-run every test (regression), not just the one that failed.
+- Keep the system prompt and the field descriptions saying the same thing; mixed signals cause flaky results.

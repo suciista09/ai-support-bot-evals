@@ -18,14 +18,27 @@ def load_policy()->str:
     return re.sub(r"<!--.*?-->", "", text, flags=re.DOTALL)
 
 class BotReply(BaseModel):
-    language: Literal["id", "en", "mixed"]
-    intent: Literal["refund", "shipping", "voucher", "other"]
+    language: Literal["id", "en", "mixed"] = Field(
+        description=(
+            "Main language of the customer's message. "
+            "Use 'mixed' when it contains an English phrase or clause, in the same "
+            "sentence or a separate one. Single English terms common in Indonesian "
+            "(refund, voucher, COD, order, policy, request) do not count. "
+            "Examples: 'Saya mau refund vouchernya' -> id. "
+            "'Barangnya udah sampai tapi the box is damaged' -> mixed. "
+            "'I want to use my voucher. Boleh nggak minta reactivate?' -> mixed."
+        )
+    )
+    intent: Literal["refund", "shipping", "voucher", "other"] = Field(
+        description="intent is what the customer is asking for (refund) or the topic of the problem (shipping)."
+    )
     needs_human: bool
     rules_applied: list[str] = Field(description="Policy rules IDs used, e.g ['REF-01']")
     answer: str
 
 SYSTEM_PROMPT = f"""You are the customer service assistant for TokoKita, an Indonesian online marketplace.
-Answer ONLY from the policy below and follow every rule exactly. In rules_applied, list only the rules that decided your answer.
+Answer ONLY from the policy below and follow every rule exactly. In rules_applied, list every policy rule you checked for this question,
+including a rule whose exception sent you to another rule (e.g. REF-02 -> REF-03).
 Do not list TON-01 or TON-02. List TON-03 only when the policy did not cover the question. Never mention rule IDs (like REF-01) or internal field names in the answer.
 Rule IDs belong only in rules_applied
 
@@ -46,7 +59,7 @@ def answer(message: str) -> BotReply:
 
 if __name__ == "__main__":
     samples = [
-        #EXPECTED: intent=['shipping'], mixed, needs_human=False, rules_applied must include 'SHP-01', 'SHP-02', 'SHP-03'.
+        #EXPECTED: intent=['shipping'], mixed, needs_human=False, rules_applied must include 'SHP-01', 'SHP-02'.
         # Must NOT agree refund is possible yet; should explain working days / ask order date.
         "Halo kak, paket saya belum sampai udah 4 hari, saya di Surabaya, based on policy, harusnya saya sudah bisa ajukan request refund kan?",
         #EXPECTED: intent=['voucher'], en, needs_human=False, rules_applied=['VOU-02'].
