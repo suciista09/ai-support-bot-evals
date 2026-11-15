@@ -21,7 +21,18 @@ CASES = [
         "must_include_rules": ["VOU-02"],
     },
     {
-        "id": "cod-not-received",
+        # Boundary pair 1/2: courier says SHIPPED (in transit) -> not a dispute, follow SHP-01
+        "id": "cod-shipped-not-arrived",
+        "message": "Hello, saya mau refund barang COD karena sampai hari ini belum saya terima. Saya sudah menghubungi kurir tapi katanya barangnya sudah dikirim. Apa yang harus saya lakukan?",
+        "intent": ["shipping", "refund"],
+        "language": "id",
+        "needs_human": False,
+        "must_include_rules": ["SHP-01", "REF-05"],
+        "must_not_contain": ["agen manusia", "human agent"],
+    },
+    {
+        # Boundary pair 2/2: courier says DELIVERED but customer didn't receive -> dispute, ESC-05
+        "id": "cod-delivered-not-received",
         "message": "Hello, saya mau refund barang COD karena sampai hari ini belum saya terima. Saya sudah menghubungi kurir tapi katanya barangnya sudah terkirim. Apa yang harus saya lakukan?",
         "intent": ["shipping", "refund"],
         "language": "id",
@@ -86,6 +97,16 @@ CASES = [
         "language": "id",
         "needs_human": False,
         "must_include_rules": ["VOU-01"],
+    },
+    {
+        # Out of scope: unrelated to TokoKita -> decline politely, no human
+        "id": "out-of-scope-itinerary",
+        "message": "Kak, bantu buat itinerary liburan ke Bali dong, aku mau ke pantai dan ke gunung",
+        "intent": "other",
+        "language": "id",
+        "needs_human": False,
+        "must_include_rules": ["TON-04"],
+        "must_not_contain": ["agen manusia", "human agent"],
     },
 
 ]
