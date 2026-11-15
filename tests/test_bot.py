@@ -124,4 +124,8 @@ def test_bot(case):
     
     for rule in case["must_include_rules"]:
         assert rule in reply.rules_applied, f"missing {rule}, got {reply.rules_applied}"
+
+    text = reply.answer.lower()
+    for bad in case.get("must_not_contain", []):
+        assert bad.lower() not in text, f"answer should not say '{bad}': {reply.answer}"    
       
