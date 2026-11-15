@@ -58,3 +58,29 @@ Wrote an `# EXPECTED` line for each message *before* running: fields, rules that
 - Cross-reference exceptions by ID in both rules (REF-02 → REF-03), so the bot doesn't have to infer the link.
 - When the spec changes, re-run every test (regression), not just the one that failed.
 - Keep the system prompt and the field descriptions saying the same thing; mixed signals cause flaky results.
+
+## Week 1 reflection (15 Nov 2026)
+
+**Where things stand:** 12 test cases, 12/12 passed. All 10 original cases also passed 3 runs in a row (30/30). The `must_not_contain` check runs now and passes.
+
+### What surprised me most
+1. **The bot is only as consistent as the policy.** Most "bot problems" disappeared once I wrote clearer rules: defining "mixed" with examples, linking exceptions by ID (REF-02 → REF-03, REF-05), separating "shipped" from "delivered". I have to decide what I expect first, then write it where the model reads it.
+2. **Real customers don't write like test cases.** Gaul, typos, the same meaning in different words ("dikirim" vs "terkirim") and mixed Bahasa/English all changed the result. Covering these variations is essential, not a nice-to-have.
+
+### Bot's fault vs my spec or test
+| Source | Count | Examples |
+|---|---|---|
+| Spec, policy or test | 9 logged, plus about 7 more from 4 and 15 Nov | "mixed" and intent undefined, COD refund rules, a test expecting a rule the spec didn't require, ambiguous test message ("dikirim") |
+| Bot | 2 logged, plus 2 more | Skipped a rule that existed; promised "I can help check" (TON-02); contradicted VOU-05; guessed the iPhone price |
+
+**About 80% of failures were in the spec, not the model.** As a QA, this is familiar: unclear requirements cause most defects.
+
+### What I'd trust as a release gate
+- **Trust now: routing.** `needs_human` and the escalation rules held across 3 runs, including the shipped/delivered boundary pair. A wrong handoff is the most costly mistake, and these checks are reliable.
+- **Not yet: answer content.** I only check banned phrases (`must_not_contain`) and my own reading. Nothing automatically checks that an answer is correct and relevant, so I can't gate a release on it.
+
+### What I'd tell a client
+"All 12 scenarios pass on routing and policy rules, and they were stable across 3 runs. Answer quality is reviewed by a person and is not automated yet. I recommend human review of replies before launch. Automated answer grading is the next step."
+
+### Next
+Measure pass *rates* over more runs instead of pass/fail, and add automated content checks (judge model).
