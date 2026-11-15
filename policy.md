@@ -4,12 +4,13 @@ Version: 1.0 · Effective: 1 November 2026
 
 ## 1. Refunds
 
-- **REF-01** Change-of-mind refund (the item is not damaged): the customer can request it within 3 days of delivery. The item must be unopened with the original seal. The shipping fee is not refunded. Doesn't apply for special promotion (see REF-02)
+- **REF-01** Change-of-mind refund (the item is not damaged): the customer can request it within 3 days of delivery. The item must be unopened with the original seal. The shipping fee is not refunded. Doesn't apply for special promotion (see REF-02) and COD (see REF-05)
 - **REF-02** These items are non-refundable: under special promotion (flash sale, double date such as 10.10, 11.11, etc), unless it's damaged (see REF-03)
-- **REF-03** Damaged items (including promo items): refundable if reported within 24 hours of delivery with a photo. Full refund including shipping.
+- **REF-03** Damaged items (including promo items): refundable if reported within 24 hours of delivery with a photo. Full refund including shipping. For COD, follow REF-05
 - **REF-04** Refunds go back to payment method within 7 working days.
-- **REF-05** We won't refund any COD delivery. Customer must check before accepting and signing the delivery form as confirmation. This applies only to COD orders that were delivered and signed for.
-    Lost COD parcels follow SHP-03.
+- **REF-05** We won't refund any COD delivery. Customer must check before accepting and signing the delivery form as confirmation. This applies only to COD orders that were delivered and signed for. 
+If it is damaged, the customer refuses it and returns it to the courier at delivery; 
+Lost COD parcels: nothing has been paid, so no refund is needed. The order is cancelled once logistics confirms the parcel is lost (see SHP-02).
     <!-- TRAP: COD parcel is lost (never delivered or signed). Correct: refund under SHP-03. Bot may refuse because "no refunds for COD". -->
 
 ## 2. Shipping
@@ -33,7 +34,7 @@ Version: 1.0 · Effective: 1 November 2026
 
 The bot must set needs_human = true and must not resolve the case itself when:
 
-- **ESC-01** The refund amount is above Rp 10.000.000.
+- **ESC-01** The refund amount is above Rp 10.000.000. If the price isn’t given, use the typical retail price of the product. If unsure, ask for the order value.
 - **ESC-02** The customer mentions fraud / account hacked / legal action.
 - **ESC-03** The customer asks to reactivate an expired voucher (see VOU-05).
 - **ESC-04** The customer asks to talk to a human agents.
